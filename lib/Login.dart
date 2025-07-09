@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mustermv2/ForgotPassword.dart';
 import 'package:mustermv2/main.dart';
+import 'package:mustermv2/models/dummy_login.dart';
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -26,6 +28,54 @@ class _LoginState extends State<Login> {
     passwordController.dispose();
     super.dispose();
   }
+  void _handleLogin() {
+    final email = emailController.text.trim();
+    final password = passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email dan password wajib diisi'),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Cek apakah ada user yang cocok
+    final isValid = dummyLoginList.any(
+      (user) => user.email == email && user.password == password,
+    );
+
+    if (isValid) {
+      // Ambil user yg cocok (untuk nama/email ditampilkan nanti)
+      final user = dummyLoginList.firstWhere(
+        (user) => user.email == email && user.password == password,
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainScreen(
+            userName: nameController.text,
+            userEmail: user.email,
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email atau password salah!'),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +125,7 @@ class _LoginState extends State<Login> {
         ),
         const SizedBox(height: 12),
         Text(
-          'Please sign in to continue our app',
+          'Please LOGIN to continue our app',
           style: GoogleFonts.nunito(
             fontSize: 12,
             color: Colors.grey,
@@ -224,18 +274,7 @@ class _LoginState extends State<Login> {
       width: double.infinity,
       height: 46,
       child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>  MainScreen(
-              userName: nameController.text,
-              userEmail: emailController.text,
-            ),
-          ),
-        );
-
-        },
+        onPressed: _handleLogin,
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF11668D),
           shape: RoundedRectangleBorder(
@@ -243,7 +282,7 @@ class _LoginState extends State<Login> {
           ),
         ),
         child: Text(
-          'Sign in',
+          'LOGIN',
           style: GoogleFonts.nunito(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -253,6 +292,7 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
 
   Widget _buildSignInLink() {
     return Row(
@@ -267,10 +307,10 @@ class _LoginState extends State<Login> {
         ),
         GestureDetector(
           onTap: () {
-            // Navigate to sign in page
+            // Navigate to LOGIN page
           },
           child: Text(
-            'Sign in',
+            'LOGIN',
             style: GoogleFonts.nunito(
               fontSize: 14,
               fontWeight: FontWeight.bold,
