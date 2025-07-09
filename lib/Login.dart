@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mustermv2/ForgotPassword.dart';
 import 'package:mustermv2/main.dart';
 import 'package:mustermv2/models/dummy_login.dart';
-
+import 'package:mustermv2/screens/Home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -49,21 +50,27 @@ class _LoginState extends State<Login> {
     );
 
     if (isValid) {
-      // Ambil user yg cocok (untuk nama/email ditampilkan nanti)
       final user = dummyLoginList.firstWhere(
         (user) => user.email == email && user.password == password,
       );
+
+      // ✅ Cetak log login berhasil
+      bool isLoggedIn = true;
+      print('Login berhasil: $isLoggedIn');
+      print('User: ${user.email}');
 
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => MainScreen(
-            userName: nameController.text,
+            userName: user.name,
             userEmail: user.email,
           ),
         ),
       );
     } else {
+      // Login gagal
+      print('Login gagal: isLoggedIn = false');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Email atau password salah!'),
@@ -73,9 +80,6 @@ class _LoginState extends State<Login> {
       );
     }
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {

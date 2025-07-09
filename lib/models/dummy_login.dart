@@ -1,13 +1,19 @@
-class DummyLoginData {
+class DummyLogin {
   final String email;
   final String password;
+  final String name;
 
-  DummyLoginData({required this.email, required this.password});
+  DummyLogin({
+    required this.email,
+    required this.password,
+    required this.name,
+  });
 }
 
-List<DummyLoginData> dummyLoginList = [
-  DummyLoginData(
+final List<DummyLogin> dummyLoginList = [
+  DummyLogin(
     email: 'testing@gmail.com',
     password: 'password',
+    name: 'testing',
   ),
 ];
