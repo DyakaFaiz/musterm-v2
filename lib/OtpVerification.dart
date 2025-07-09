@@ -4,10 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mustermv2/main.dart';
 import 'dart:async';
 
-import 'package:mustermv2/screens/Home.dart';
 
 class OtpVerification extends StatefulWidget {
-  const OtpVerification({Key? key}) : super(key: key);
+  const OtpVerification({super.key});
 
   @override
   _OtpVerificationState createState() => _OtpVerificationState();
@@ -194,7 +193,12 @@ class _OtpVerificationState extends State<OtpVerification> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MainScreen()),
+            MaterialPageRoute(
+              builder: (context) => MainScreen(
+                userName: '',
+                userEmail: '',
+              ),
+            )
           );
         },
         style: ElevatedButton.styleFrom(

@@ -36,13 +36,19 @@ class AuthCheckScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isLoggedIn = false; // Ubah menjadi `true` jika user sudah login
 
-    return isLoggedIn ? const MainScreen() : const Register();
+    return isLoggedIn
+    ? MainScreen(userName: '', userEmail: '')
+    : const Register();
+
   }
 }
 
 // MainScreen untuk navigasi jika user sudah login
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final String userName;
+  final String userEmail;
+
+  const MainScreen({super.key, required this.userName, required this.userEmail});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -51,13 +57,23 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0; // Mulai dari HomeScreen
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const KelasScreen(),
-    const ArScreen(),
-    const KuisScreen(),
-    const ProfileScreen(),
-  ];
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _screens = [
+      const HomeScreen(),
+      const KelasScreen(),
+      const ArScreen(),
+      const KuisScreen(),
+      ProfileScreen(
+        userName: widget.userName,
+        userEmail: widget.userEmail,
+      ),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {

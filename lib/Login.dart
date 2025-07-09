@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mustermv2/ForgotPassword.dart';
 import 'package:mustermv2/main.dart';
-import 'package:mustermv2/screens/Home.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({super.key});
 
   @override
   _LoginState createState() => _LoginState();
@@ -227,9 +226,15 @@ class _LoginState extends State<Login> {
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MainScreen())
-          );
+          context,
+          MaterialPageRoute(
+            builder: (context) =>  MainScreen(
+              userName: nameController.text,
+              userEmail: emailController.text,
+            ),
+          ),
+        );
+
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF11668D),
